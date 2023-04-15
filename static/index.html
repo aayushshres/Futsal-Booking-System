@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futsal Booking Website</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://kit.fontawesome.com/6ef829cf00.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<!-- view or hide review -->
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#review").click(function () {
+            $('#toggle').toggle("slide");
+        })
+    })
+</script>
+
+
+
+<!-- LOGIN FORM VALIDATION -->
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#first_form').submit(function (e) {
+            e.preventDefault();
+
+            var name = $('#name').val();
+            var password = $('#password').val();
+
+            $(".error").remove();
+
+            if (name.length < 1) {
+                $('#name').after('<span class="error">This field is required</span>');
+            }
+
+            else {
+                var regEx = "^[a-zA-Z ]{2,30}$";
+                var validname = name.match(regEx);
+                if (!validname) {
+                    $('#name').after('<span class="error">Enter a valid name</span>');
+                }
+
+                else {
+                    var valid_name = $('#name').val();
+                    alert("Welcome " + "" + valid_name);
+                }
+
+            }
+            if (password.length < 8) {
+                $('#password').after('<span class="error">Password must be at least 8 characters long</span>');
+            }
+
+
+
+        });
+    });
+
+</script>
+
+
+
+<!-- form submission -->
+
+
+
+<body ng-app="MyApp">
+
+    <header>
+        <div id="menu-bar" class="fas fa-bars"></div>
+
+        <a href="#" class="logo"><span>F</span>utsal</a>
+
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#book">Book</a>
+            <a href="#discover">Discover</a>
+            <a href="#review">Reviews</a>
+        </nav>
+
+        <div class="icons">
+            <i class="fas fa-search" id="search-btn"></i>
+            <i class="fa-solid fa-right-to-bracket" id="login-btn"></i>
+            <i class="fas fa-user" id="profile-btn"></i>
+        </div>
+
+        <form action="" class="search-bar-container">
+            <input type="search" id="search-bar" placeholder="Search...">
+            <label for="search-bar" class="fas fa-search"></label>
+        </form>
+    </header>
+
+
+
+    <!-- login form -->
+
+    <div class="login-form-container">
+
+        <i class="fas fa-times" id="form-close"></i>
+
+        <form id="first_form" method="post" action="">
+            <h3>login</h3>
+
+            <input type="username" class="box" placeholder="enter your username" name="name" id="name">
+            <input type="password" class="box" placeholder="enter your password" name="password" id="password">
+
+            <input type="submit" value="login now" class="btn" onclick="displayGreeting()">
+            <input type="checkbox" id="remember">
+            <label for="remember">remember me</label>
+            <p>forget password? <a href="#">click here</a></p>
+            <p>don't have an account? <a href="#">register now</a></p>
+        </form>
+
+    </div>
+
+
+    <div class="container">
+
+        <i class="fas fa-times" id="profile-close"></i>
+
+        <div class="profile-box">
+            <img src="media/dp.png" alt="">
+            <div class="content">
+                <h3 id="player_name"> Aayush Shrestha </h3>
+                <p class>Futsal Team Name</p>
+                <p>Captain</p>
+                <p><a href="#home" class="btn">Contact</a></p>
+            </div>
+        </div>
+
+    </div>
+    <!-- profile section ends -->
+
+
+    <!-- home section starts  -->
+    <section class="home" id="home">
+
+        <div class="content">
+            <h3>Let's Play Ball</h3>
+            <p>dicover new grounds with us, challenge awaits</p>
+            <a href="#discover" class="btn">discover more</a>
+        </div>
+
+        <div class="controls">
+            <span class="vid-btn active" data-src="media/vid-1.mp4"></span>
+            <span class="vid-btn" data-src="media/vid-2.mp4"></span>
+            <span class="vid-btn" data-src="media/vid-3.mp4"></span>
+            <span class="vid-btn" data-src="media/vid-4.mp4"></span>
+            <span class="vid-btn" data-src="media/vid-5.mp4"></span>
+        </div>
+
+        <div class="video-container">
+            <video src="media/vid-1.mp4" id="video-slider" loop autoplay muted></video>
+        </div>
+
+    </section>
+    <!-- home section ends -->
+
+
+    <!-- book section starts  -->
+    <section class="book" id="book">
+
+        <h1 class="heading">
+            <span>b</span>
+            <span>o</span>
+            <span>o</span>
+            <span>k</span>
+            <span class="space"></span>
+            <span>n</span>
+            <span>o</span>
+            <span>w</span>
+        </h1>
+
+        <div class="row">
+
+            <div class="image">
+                <img src="media/book-img.svg" alt="">
+            </div>
+
+
+
+            <div ng-controller="mycontrl">
+
+                <form name="SaveForm" ng-submit="funcSave()">
+
+                    <div class="inputBox">
+
+                        <h3>Location</h3>
+
+                        <input type="text" placeholder="Enter Location" required maxlength="20"
+                            ng-pattern="/^[azA-Z. ]*[a-zA-Z]{1,20}$/" name="name" ng-model="name" />
+                        <br />
+                        <span style="color:red" ng-show="SaveForm.name.$dirty && SaveForm.name.$invalid"
+                            class="ng-hide">
+                            Please Enter Valid Localtion!
+                        </span>
+
+                    </div>
+
+
+                    <div class="inputBox">
+                        <h3>how many</h3>
+                        <input type="text" placeholder="Enter number of Players" ng-pattern="/^[5-9]$/" name="player"
+                            ng-model="player">
+                        <br />
+                        <span style="color:red" ng-show="SaveForm.player.$dirty && SaveForm.player.$invalid"
+                            class="ng-hide">
+                            Please Enter Number of players between 5 to 9!
+                        </span>
+                    </div>
+
+
+
+                    <div class="inputBox">
+                        <h3>Date</h3>
+                        <input type="date" r>
+                    </div>
+
+
+
+                    <div class="inputBox">
+                        <h3>Time</h3>
+                        <input type="time">
+                    </div>
+
+
+
+                    <input type="submit" class="btn" value="search">
+
+
+                </form>
+
+            </div>
+        </div>
+        </div>
+
+
+    </section>
+
+    <!-- discover -->
+
+    <section class="discover" id="discover">
+
+        <h1 class="heading">
+            <span>d</span>
+            <span>i</span>
+            <span>s</span>
+            <span>c</span>
+            <span>o</span>
+            <span>v</span>
+            <span>e</span>
+            <span>r</span>
+        </h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <img src="media/p-1.jpg" alt="">
+                <div class="content">
+                    <h3> <i class="fas fa-map-marker-alt"></i> vellore </h3>
+                    <p>Futsal description given by owners!</p>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price"> ₹180.00 <span>₹240.00</span> </div>
+                    <a href="#book" class="btn">book now</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="media/p-2.jpg" alt="">
+                <div class="content">
+                    <h3> <i class="fas fa-map-marker-alt"></i> chennai </h3>
+                    <p>Futsal description given by owners!</p>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price"> ₹180.00 <span>₹240.00</span> </div>
+                    <a href="#book" class="btn">book now</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="media/p-3.jpg" alt="">
+                <div class="content">
+                    <h3> <i class="fas fa-map-marker-alt"></i> banglore </h3>
+                    <p>Futsal description given by owners!</p>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price"> ₹180.00 <span>₹240.00</span> </div>
+                    <a href="#book" class="btn">book now</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="media/p-4.jpg" alt="">
+                <div class="content">
+                    <h3> <i class="fas fa-map-marker-alt"></i> kolkata </h3>
+                    <p>Futsal description given by owners!</p>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price"> ₹180.00 <span>₹240.00</span> </div>
+                    <a href="#book" class="btn">book now</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="media/p-5.jpg" alt="">
+                <div class="content">
+                    <h3> <i class="fas fa-map-marker-alt"></i> delhi </h3>
+                    <p>Futsal description given by owners!</p>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price"> ₹180.00 <span>₹240.00</span> </div>
+                    <a href="#book" class="btn">book now</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <div ng-app="">
+                    < <img src="media/p-6.jpg" alt="">
+                        <div class="content">
+                            <h3> <i class="fas fa-map-marker-alt"></i> mumbai </h3>
+                            <p>Futsal description given by owners!</p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <div class="price"> ₹180.00 <span>₹240.00</span> </div>
+                            <a href="#book" class="btn">book now</a>
+                        </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- review -->
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <section class="review" id="review">
+
+        <h1 class="heading">
+            <span>r</span>
+            <span>e</span>
+            <span>v</span>
+            <span>i</span>
+            <span>e</span>
+            <span>w</span>
+            <span>s</span>
+        </h1>
+
+        <div id="toggle" ;style="display: none;">
+            <div class="swiper-container review-slider">
+
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <img src="media/pic1.png" alt="">
+                            <h3>Mikasa Ackerman</h3>
+                            <p>Reviews from customers</p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <img src="media/pic2.png" alt="">
+                            <h3>Smaran Lal Shrestha</h3>
+                            <p>Reviews from customers</p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <img src="media/pic3.png" alt="">
+                            <h3>Hange Zoë</h3>
+                            <p>Reviews from customers</p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+
+                        <div class="box">
+                            <img src="media/pic4.png" alt="">
+                            <h3 id="hi">Aayush Shrestha</h3>
+                            <p>Reviews from customers</p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+    <script src="script.js"></script>
+
+
+    <script>
+        var app = angular.module("MyApp", []);
+        app.controller('mycontrl', function ($scope) {
+            $scope.funcSave = function () {
+                if ($scope.SaveForm.$valid) {
+                    alert("Form Submitted!!");
+                }
+                else {
+                    alert("Form is not Valid..!!");
+                }
+            }
+        })
+    </script>
+
+    =
+</body>
+
+</html>
